@@ -8,22 +8,19 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Servidor {
+public class Server implements Runnable {
 	
 	private int serverPort;
 	
 	private Socket client;//temporario esse eh o socket do  serverSocket.accept();
 	private ServerSocket serverSocket;
 	
-	public Servidor(int serverPort) throws IOException{
+	public Server(int serverPort) throws IOException{
 		this.serverPort = serverPort;
 		this.serverSocket = new ServerSocket(serverPort);
 	}
 	public static void main(String []args) throws IOException{
-		Servidor serv = new Servidor(8000);
-		Socket socket = serv.serverSocket.accept();
-		serv.send("C:\\Program Files (x86)\\Steam\\Steam.exe", socket);
-		
+
 	}
 	
 	public void send(String path, Socket client) throws IOException {
@@ -44,7 +41,17 @@ public class Servidor {
 		System.out.println("prinf");
 		
 	}
-	
-
+	@Override
+	public void run() {
+		try{	
+			System.out.println("aguardando na porta "+ this.serverPort);
+			Socket socket =this.serverSocket.accept();
+			this.send("C:\\Program Files (x86)\\Steam\\Steam.exe", socket);
+			socket.close();
+		}catch(IOException e){	
+			e.printStackTrace();
+		}
+		
+	}
 	
 }
