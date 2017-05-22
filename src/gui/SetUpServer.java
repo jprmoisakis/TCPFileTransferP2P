@@ -21,7 +21,7 @@ public class SetUpServer extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField portField;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -54,12 +54,12 @@ public class SetUpServer extends JFrame {
 		contentPane.add(portField);
 		portField.setColumns(10);
 		
-		JButton btnEnviar = new JButton("Enviar");
+		JButton btnEnviar = new JButton("OK");
 		btnEnviar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String portString = portField.getText();
-				int port = Integer.parseInt(portString);
-				GUI.setserverPort(port);
+				int port = Integer.parseInt(portString);//transforma em int a porta
+				GUI.setServerPort(port);
 				try {
 					GUI.setServer(new Server(port));//seta a parte servidor da aplicacao
 				} catch (IOException e) {
@@ -67,7 +67,12 @@ public class SetUpServer extends JFrame {
 					e.printStackTrace();
 				}
 				GUI.showSetUpServer(false); //esconde a janela atual
-				GUI.getServer().run();
+				 
+				
+				GUI.getSetUpClient();
+				GUI.showSetUpClient(true);//chama a proxima janela
+				
+				
 				dispose();
 			}
 		});

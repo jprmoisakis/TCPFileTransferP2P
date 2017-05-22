@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Client {
+public class Client implements Runnable{
 	private int port;
 	private String address;
 	private Socket socket;
@@ -38,6 +38,12 @@ public class Client {
 	    buffer.flush();
 	    buffer.close();
 	    
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
