@@ -2,6 +2,7 @@ package miniProjeto;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,10 +18,13 @@ public class Server implements Runnable {
 	
 	private Socket client;//temporario esse eh o socket do  serverSocket.accept();
 	private ServerSocket serverSocket;
+	private String fileName;
+	private ServerSocket s;
 	
 	public Server(int serverPort) throws IOException{
 		this.serverPort = serverPort;
 		this.serverSocket = new ServerSocket(serverPort);
+		this.s = new ServerSocket(8100);
 	}
 
 	
@@ -28,7 +32,7 @@ public class Server implements Runnable {
 		
 		byte [] pkt = new byte[1024*16]; //tamanho do pkt
 		InputStream input = this.client.getInputStream();
-		FileOutputStream output = new FileOutputStream("fileReceivedeeyiio.rar");//ajeitar para receber o nome do arquivo
+		FileOutputStream output = new FileOutputStream(this.fileName + "rcv.zip");//ajeitar para receber o nome do arquivo
 		BufferedOutputStream buffer = new BufferedOutputStream(output);
 		int pktSize = -1;
 		
@@ -43,11 +47,18 @@ public class Server implements Runnable {
 	    
 	}
 
+	public void receiveFileName() throws IOException{//recebe o filename
+		Socket a = s.accept();
+		DataInputStream in = new DataInputStream(a.getInputStream());
+		this.fileName = in.readUTF();
+		
+	}
 
 	@Override
 	public void run() {
 		while(true){	
 			try {
+				this.receiveFileName();
 				System.out.println("esperando");
 				this.client =this.serverSocket.accept();
 				this.receive();

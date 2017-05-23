@@ -17,6 +17,7 @@ public abstract class GUI {
 	
 	private static String file2SendName;
 	
+	//funções auxiliares para manter o controle da gui e das informações obtidas por ela
 	
 	public static String getFile2SendName() {
 		return file2SendName;
@@ -98,7 +99,7 @@ public abstract class GUI {
 	
 	public static void main(String[] args) {
 		
-		SetUpServer telaSetUpServer= GUI.getSetUpServer();
+		SetUpServer telaSetUpServer= GUI.getSetUpServer();//boot inicial
 		telaSetUpServer.setVisible(true);
 		
 		

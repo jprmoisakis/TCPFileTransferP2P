@@ -72,7 +72,6 @@ public class SetUpServer extends JFrame {
 				
 				GUI.showSetUpServer(false); //esconde a janela atual
 
-				
 				GUI.getSetUpClient();
 				GUI.showSetUpClient(true);//chama a proxima janela
 				

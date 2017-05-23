@@ -6,11 +6,15 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import miniProjeto.Client;
+
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
 
@@ -18,7 +22,7 @@ public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField fileNameField;
-
+	private Thread t;
 	/**
 	 * Launch the application.
 	 */
@@ -61,6 +65,16 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String filename = fileNameField.getText();
 				GUI.setFile2SendName(filename);
+				try {
+					GUI.setClient(new Client(GUI.getConnectToPort(),GUI.getConnectToAddress(),filename));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				t= new Thread(GUI.getClient());
+				t.start();
+				
+				//GUI.showMainFrame(true);
 				
 				
 			}
