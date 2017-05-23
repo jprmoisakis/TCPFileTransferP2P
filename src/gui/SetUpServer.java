@@ -21,7 +21,7 @@ public class SetUpServer extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField portField;
-	
+	private Thread t;
 	/**
 	 * Launch the application.
 	 */
@@ -56,6 +56,7 @@ public class SetUpServer extends JFrame {
 		
 		JButton btnEnviar = new JButton("OK");
 		btnEnviar.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
 				String portString = portField.getText();
 				int port = Integer.parseInt(portString);//transforma em int a porta
@@ -66,8 +67,11 @@ public class SetUpServer extends JFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				t= new Thread(GUI.getServer());
+				t.start();
+				
 				GUI.showSetUpServer(false); //esconde a janela atual
-				 
+
 				
 				GUI.getSetUpClient();
 				GUI.showSetUpClient(true);//chama a proxima janela

@@ -43,15 +43,16 @@ public class Server implements Runnable {
 	}
 	@Override
 	public void run() {
-		try{	
-			System.out.println("aguardando na porta "+ this.serverPort);
-			Socket socket =this.serverSocket.accept();
-			this.send("C:\\Program Files (x86)\\Steam\\Steam.exe", socket);
-			socket.close();
-		}catch(IOException e){	
-			e.printStackTrace();
+		while(true){
+			try{	
+				System.out.println("aguardando na porta "+ this.serverPort);
+				Socket socket =this.serverSocket.accept();
+				this.send("Projeto de hardware.rar", socket);
+				socket.close();
+			}catch(IOException e){	
+				e.printStackTrace();
+			}
 		}
-		
 	}
 	
 }

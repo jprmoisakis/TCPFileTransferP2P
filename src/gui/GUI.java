@@ -76,7 +76,8 @@ public abstract class GUI {
 		
 		SetUpServer telaSetUpServer= GUI.getSetUpServer();
 		telaSetUpServer.setVisible(true);
-		System.out.println("fd");
+		
+		
 	}
 
 

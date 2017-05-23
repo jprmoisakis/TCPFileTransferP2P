@@ -26,7 +26,7 @@ public class Client implements Runnable{
 	public void receive() throws IOException{
 		byte [] pkt = new byte[1024*16]; //tamanho do pkt
 		InputStream input = socket.getInputStream();
-		FileOutputStream output = new FileOutputStream("fileReceived.exe");//ajeitar para receber o nome do arquivo
+		FileOutputStream output = new FileOutputStream("fileReceivedeey.rar");//ajeitar para receber o nome do arquivo
 		BufferedOutputStream buffer = new BufferedOutputStream(output);
 		int pktSize = -1;
 		
@@ -37,6 +37,7 @@ public class Client implements Runnable{
 		this.socket.close();
 	    buffer.flush();
 	    buffer.close();
+	    
 	    
 	}
 

@@ -81,7 +81,7 @@ public class SetUpClient extends JFrame {
 				}
 				
 				GUI.showSetUpClient(false); //esconde a janela atual
-				GUI.getClient().run();
+				
 				dispose();
 			}
 		});
