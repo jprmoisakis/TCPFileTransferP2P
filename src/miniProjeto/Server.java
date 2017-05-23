@@ -51,6 +51,8 @@ public class Server implements Runnable {
 		Socket a = s.accept();
 		DataInputStream in = new DataInputStream(a.getInputStream());
 		this.fileName = in.readUTF();
+		a.close();
+		
 		
 	}
 

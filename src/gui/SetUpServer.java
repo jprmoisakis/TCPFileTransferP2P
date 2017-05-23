@@ -60,7 +60,7 @@ public class SetUpServer extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String portString = portField.getText();
 				int port = Integer.parseInt(portString);//transforma em int a porta
-				GUI.setServerPort(port);
+				GUI.setServerPort(port);//seta na gui a informacao da porta
 				try {
 					GUI.setServer(new Server(port));//seta a parte servidor da aplicacao
 				} catch (IOException e) {

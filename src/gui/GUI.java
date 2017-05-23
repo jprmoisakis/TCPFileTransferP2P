@@ -51,7 +51,6 @@ public abstract class GUI {
 		GUI.connectToPort = connectToPort;
 	}
 	
-	
 	public int getServerPort(){
 		return serverPort;
 	}
@@ -105,7 +104,8 @@ public abstract class GUI {
 		
 	}
 
-
+	//FILENAME EH ENVIADO NA PORTA 8100 POR PADRAO
+	
 
 
 

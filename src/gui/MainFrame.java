@@ -56,7 +56,7 @@ public class MainFrame extends JFrame {
 		contentPane.add(progressBar);
 		
 		fileNameField = new JTextField();
-		fileNameField.setBounds(99, 163, 217, 20);
+		fileNameField.setBounds(125, 163, 217, 20);
 		contentPane.add(fileNameField);
 		fileNameField.setColumns(10);
 		
