@@ -73,14 +73,14 @@ public class SetUpClient extends JFrame {
 				
 				GUI.setConnectToPort(port);
 				GUI.setConnectToAddress(address);
-				try {
-					GUI.setClient(new Client(port,address));//seta a parte servidor da aplicacao
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				
+				ipField.setText("");
+				portField.setText("");
 				
 				GUI.showSetUpClient(false); //esconde a janela atual
+				
+				GUI.getMainFrame();
+				GUI.showMainFrame(true);
 				
 				dispose();
 			}
@@ -88,7 +88,6 @@ public class SetUpClient extends JFrame {
 		btnEnviar.setBounds(187, 69, 89, 23);
 		contentPane.add(btnEnviar);
 		
-
 		
 		JLabel portaLabel = new JLabel("Insira as informaçoes de quem você quer se conectar");
 		portaLabel.setFont(new Font("MS Reference Sans Serif", Font.PLAIN, 9));

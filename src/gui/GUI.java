@@ -13,7 +13,19 @@ public abstract class GUI {
 	private static Server server;
 	private static int serverPort;
 	
+	private static MainFrame mainFrame;
 	
+	private static String file2SendName;
+	
+	
+	public static String getFile2SendName() {
+		return file2SendName;
+	}
+
+	public static void setFile2SendName(String file2SendName) {
+		GUI.file2SendName = file2SendName;
+	}
+
 	public static Client getClient() {
 		return client;
 	}
@@ -71,6 +83,18 @@ public abstract class GUI {
 		}
 		return setUpClient;
 	}
+
+	
+	public static synchronized MainFrame getMainFrame() {
+		if(mainFrame == null){
+			mainFrame = new MainFrame();
+		}
+		return mainFrame;
+	}
+
+	public static synchronized void showMainFrame(boolean show) {
+		mainFrame.setVisible(show);
+	}
 	
 	public static void main(String[] args) {
 		
@@ -79,6 +103,10 @@ public abstract class GUI {
 		
 		
 	}
+
+
+
+
 
 
 
