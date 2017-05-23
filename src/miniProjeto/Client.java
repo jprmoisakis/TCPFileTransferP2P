@@ -1,9 +1,13 @@
 package miniProjeto;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -20,30 +24,35 @@ public class Client implements Runnable{
 	
 	public static void main(String []args) throws UnknownHostException, IOException{
 		Client client = new Client(8000,"127.0.0.1");
-		client.receive();
+		client.send("Projeto de Hardware.rar", client.socket);
 	}
 	
-	public void receive() throws IOException{
-		byte [] pkt = new byte[1024*16]; //tamanho do pkt
-		InputStream input = socket.getInputStream();
-		FileOutputStream output = new FileOutputStream("fileReceivedeey.rar");//ajeitar para receber o nome do arquivo
-		BufferedOutputStream buffer = new BufferedOutputStream(output);
-		int pktSize = -1;
+	public void send(String path, Socket client) throws IOException {
 		
-		while ((pktSize = input.read(pkt)) > 0) {//a medida que recebe, vai montando o arquivo
-			System.out.println("d");
+		File file = new File(path); // caminho pro arquivo a ser enviado ex: "C:\\Program Files (x86)\\Steam\\Steam.exe"
+		byte[] pkt = new byte [1024*16]; //define o tamanho maximo do pkt
+		FileInputStream toSend = new FileInputStream(file);
+		BufferedInputStream buffer = new BufferedInputStream(toSend);// cria buffer do arquivo
+		OutputStream output = client.getOutputStream();
+		int pktSize = -1;        
+		while ((pktSize = buffer.read(pkt)) > 0) { //envia a medida que vai lendo o arquivo para nao causar falta de memoria
             output.write(pkt, 0, pktSize);
+            System.out.println(pktSize);
         }
-		this.socket.close();
-	    buffer.flush();
-	    buffer.close();
-	    
-	    
+		
+		output.flush();
+		client.close();;
+		System.out.println("prinf");
+		
 	}
-
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+			try{	
+				this.send("Projeto de hardware.rar", socket);
+				socket.close();
+			}catch(IOException e){	
+				e.printStackTrace();
+			}
 		
 	}
 

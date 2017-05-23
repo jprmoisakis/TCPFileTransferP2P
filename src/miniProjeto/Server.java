@@ -1,9 +1,12 @@
 package miniProjeto;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,37 +22,37 @@ public class Server implements Runnable {
 		this.serverPort = serverPort;
 		this.serverSocket = new ServerSocket(serverPort);
 	}
-	public static void main(String []args) throws IOException{
 
-	}
 	
-	public void send(String path, Socket client) throws IOException {
+	public void receive() throws IOException{
 		
-		File file = new File(path); // caminho pro arquivo a ser enviado ex: "C:\\Program Files (x86)\\Steam\\Steam.exe"
-		byte[] pkt = new byte [1024*16]; //define o tamanho maximo do pkt
-		FileInputStream toSend = new FileInputStream(file);
-		BufferedInputStream buffer = new BufferedInputStream(toSend);// cria buffer do arquivo
-		OutputStream output = client.getOutputStream();
-		int pktSize = -1;        
-		while ((pktSize = buffer.read(pkt)) > 0) { //envia a medida que vai lendo o arquivo para nao causar falta de memoria
+		byte [] pkt = new byte[1024*16]; //tamanho do pkt
+		InputStream input = this.client.getInputStream();
+		FileOutputStream output = new FileOutputStream("fileReceivedeeyiio.rar");//ajeitar para receber o nome do arquivo
+		BufferedOutputStream buffer = new BufferedOutputStream(output);
+		int pktSize = -1;
+		
+		while ((pktSize = input.read(pkt)) > 0) {//a medida que recebe, vai montando o arquivo
+			System.out.println("d");
             output.write(pkt, 0, pktSize);
-            System.out.println(pktSize);
         }
 		
-		output.flush();
-		client.close();;
-		System.out.println("prinf");
-		
+	    buffer.flush();
+	    buffer.close();
+	    this.client.close();
+	    
 	}
+
+
 	@Override
 	public void run() {
-		while(true){
-			try{	
-				System.out.println("aguardando na porta "+ this.serverPort);
-				Socket socket =this.serverSocket.accept();
-				this.send("Projeto de hardware.rar", socket);
-				socket.close();
-			}catch(IOException e){	
+		while(true){	
+			try {
+				System.out.println("esperando");
+				this.client =this.serverSocket.accept();
+				this.receive();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
