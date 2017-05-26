@@ -61,12 +61,14 @@ public class MainFrame extends JFrame {
 		fileNameField.setColumns(10);
 		
 		JButton btnEnviar = new JButton("Enviar");
-		btnEnviar.addActionListener(new ActionListener() {
+		btnEnviar.addActionListener(new ActionListener() {//abre uma conexão com o cliente destino e envia o arquivo
 			public void actionPerformed(ActionEvent e) {
 				String filename = fileNameField.getText();
+				progressBar.setMinimum(0);
+				progressBar.setMaximum(100);
 				GUI.setFile2SendName(filename);
 				try {
-					GUI.setClient(new Client(GUI.getConnectToPort(),GUI.getConnectToAddress(),filename));
+					GUI.setClient(new Client(GUI.getConnectToPort(),GUI.getConnectToAddress(),filename,progressBar));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -74,7 +76,7 @@ public class MainFrame extends JFrame {
 				t= new Thread(GUI.getClient());
 				t.start();
 				
-				//GUI.showMainFrame(true);
+				GUI.showMainFrame(true);
 				
 				
 			}

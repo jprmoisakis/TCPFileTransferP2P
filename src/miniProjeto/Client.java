@@ -12,21 +12,26 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.swing.JProgressBar;
+
 public class Client implements Runnable{
 	private int port;
 	private String address;
 	private Socket socket;
 	private String filePath;
+	private JProgressBar progressBar;
+	private int auxValue;
 	
-	public Client(int port, String address, String filePath) throws UnknownHostException, IOException{
+	public Client(int port, String address, String filePath, JProgressBar progressBar) throws UnknownHostException, IOException{
 		this.port = port;
 		this.address = address;
 		this.socket = new Socket(address, port);
 		this.filePath = filePath;
+		this.progressBar = progressBar;
 	}
 	
 	public static void main(String []args) throws UnknownHostException, IOException{
-		//Client client = new Client(8000,"127.0.0.1");
+		//Client client = new Client(8000,"	127.0.0.1");
 		//client.send("Projeto de Hardware.rar", client.socket);
 	}
 	
@@ -38,15 +43,17 @@ public class Client implements Runnable{
 		FileInputStream toSend = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(toSend);//buffer do arquivo
 		OutputStream output = client.getOutputStream();
+		int totalSize=(int) file.getTotalSpace();
 		int pktSize = -1;        
 		while ((pktSize = buffer.read(pkt)) > 0) { //escreve a medida que vai lendo o arquivo para nao causar falta de memoria
-            output.write(pkt, 0, pktSize);
+            this.manageProgressBar(pktSize, totalSize);
+			output.write(pkt, 0, pktSize);
             System.out.println(pktSize);
         }
 		
 		output.flush();
 		client.close();;
-		System.out.println("prinf");
+		System.out.println("enviou");
 		
 	}
 	
@@ -56,6 +63,20 @@ public class Client implements Runnable{
 		data.writeUTF(path);
 		data.flush();
 		data.close();
+	}
+	private int i;
+	public void manageProgressBar(int value,int total){
+		this.auxValue = 10000;
+		System.out.println(this.auxValue);
+		
+		long percent = (this.auxValue*100)/total;
+		if(percent>1.0){
+			this.progressBar.setValue((int) percent);
+		}
+		System.out.println(percent +"erhweuh");
+
+		//ajustar
+		System.out.println(this.progressBar.getValue());
 	}
 	
 	@Override

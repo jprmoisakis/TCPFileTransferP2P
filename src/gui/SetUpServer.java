@@ -57,7 +57,7 @@ public class SetUpServer extends JFrame {
 		JButton btnEnviar = new JButton("OK");
 		btnEnviar.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {//sobe a parte que fica ouvindo da aplicação
 				String portString = portField.getText();
 				int port = Integer.parseInt(portString);//transforma em int a porta
 				GUI.setServerPort(port);//seta na gui a informacao da porta
