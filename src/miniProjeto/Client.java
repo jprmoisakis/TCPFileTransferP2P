@@ -67,7 +67,7 @@ public class Client implements Runnable{
 		data.flush();
 		data.close();
 	}
-	private int i;
+	
 	public void manageProgressBar(int value,int total){
 		this.progressBar.setMaximum(total);
 		this.auxValue +=value;

@@ -1,5 +1,7 @@
 package gui;
 
+import javax.swing.JProgressBar;
+
 import miniProjeto.Client;
 import miniProjeto.Server;
 
@@ -13,10 +15,30 @@ public abstract class GUI {
 	private static Server server;
 	private static int serverPort;
 	
+	private static JProgressBar progressBar1;
+	private static JProgressBar progressBar2;
+	
 	private static MainFrame mainFrame;
 	
 	private static String file2SendName;
 	
+	public static JProgressBar getProgressBar1() {
+		return progressBar1;
+	}
+
+	public static void setProgressBar1(JProgressBar progressBar1) {
+		GUI.progressBar1 = progressBar1;
+	}
+
+	public static JProgressBar getProgressBar2() {
+		return progressBar2;
+	}
+
+	public static void setProgressBar2(JProgressBar progressBar2) {
+		GUI.progressBar2 = progressBar2;
+	}
+
+
 	//funções auxiliares para manter o controle da gui e das informações obtidas por ela
 	
 	public static String getFile2SendName() {

@@ -50,6 +50,9 @@ public class MainFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JProgressBar progressBar2 = new JProgressBar();
+		progressBar2.setBounds(58, 97, 261, 29);
+		contentPane.add(progressBar2);
 
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setBounds(58, 57, 261, 29);
@@ -64,10 +67,13 @@ public class MainFrame extends JFrame {
 		btnEnviar.addActionListener(new ActionListener() {//abre uma conexão com o cliente destino e envia o arquivo
 			public void actionPerformed(ActionEvent e) {
 				String filename = fileNameField.getText();
-				progressBar.setMinimum(0);
-				progressBar.setMaximum(100);
+				progressBar.setValue(0);
+				progressBar2.setValue(0);
+				
 				GUI.setFile2SendName(filename);
 				try {
+					GUI.getServer().setProgressBar(progressBar2);
+					GUI.setProgressBar2(progressBar2);
 					GUI.setClient(new Client(GUI.getConnectToPort(),GUI.getConnectToAddress(),filename,progressBar));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -75,7 +81,7 @@ public class MainFrame extends JFrame {
 				}
 				t= new Thread(GUI.getClient());
 				t.start();
-				
+				GUI.getServer().setProgressBar(progressBar2);
 				GUI.showMainFrame(true);
 				
 				
@@ -122,9 +128,7 @@ public class MainFrame extends JFrame {
 		lblIp.setBounds(36, 17, 46, 14);
 		contentPane.add(lblIp);
 		
-		JProgressBar progressBar2 = new JProgressBar();
-		progressBar2.setBounds(58, 97, 261, 29);
-		contentPane.add(progressBar2);
+
 		
 		JLabel lblEnvio = new JLabel("Envio");
 		lblEnvio.setBounds(10, 57, 46, 14);

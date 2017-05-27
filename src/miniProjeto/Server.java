@@ -12,6 +12,8 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import javax.swing.JProgressBar;
+
 public class Server implements Runnable {
 	
 	private int serverPort;
@@ -21,11 +23,18 @@ public class Server implements Runnable {
 	private String fileName;
 	private int fileSize;
 	private ServerSocket s;
+	private JProgressBar progressBar;
+	private int auxValue;
 	
-	public Server(int serverPort) throws IOException{
+	public Server(int serverPort,JProgressBar progressBar) throws IOException{
 		this.serverPort = serverPort;
 		this.serverSocket = new ServerSocket(serverPort);
 		this.s = new ServerSocket(8100);
+		this.progressBar = progressBar;
+	}
+	
+	public void setProgressBar(JProgressBar progressBar) {
+		this.progressBar = progressBar;
 	}
 
 	
@@ -38,7 +47,7 @@ public class Server implements Runnable {
 		int pktSize = -1;
 		
 		while ((pktSize = input.read(pkt)) > 0) {//a medida que recebe, vai montando o arquivo
-			//System.out.println("d");
+            this.manageProgressBar(pktSize, this.fileSize);
             output.write(pkt, 0, pktSize);
         }
 		
@@ -46,6 +55,11 @@ public class Server implements Runnable {
 	    buffer.close();
 	    this.client.close();
 	    
+	}
+	public void manageProgressBar(int value,int total){
+		this.progressBar.setMaximum(total);
+		this.auxValue +=value;
+		this.progressBar.setValue(this.auxValue);
 	}
 
 	public void receiveFileName() throws IOException{//recebe o filename
@@ -67,6 +81,7 @@ public class Server implements Runnable {
 				System.out.println("esperando");
 				this.client =this.serverSocket.accept();
 				this.receive();
+				//this.progressBar.setValue(0);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
