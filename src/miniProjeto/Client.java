@@ -58,7 +58,7 @@ public class Client implements Runnable{
 		
 	}
 	
-	public void sendFileName(String path, File file) throws UnknownHostException, IOException{//envia o nome do arquivo na porta 8100
+	public void sendFileName(String path, File file) throws UnknownHostException, IOException{//envia o nome e tamanho do arquivo na porta 8100
 		this.totalSize = (int) file.getTotalSpace();
 		Socket socket = new Socket(this.address, 8100);
 		DataOutputStream data = new DataOutputStream(socket.getOutputStream());
