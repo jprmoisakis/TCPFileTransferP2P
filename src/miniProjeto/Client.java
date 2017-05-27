@@ -21,6 +21,7 @@ public class Client implements Runnable{
 	private String filePath;
 	private JProgressBar progressBar;
 	private int auxValue;
+	private int totalSize;
 	
 	public Client(int port, String address, String filePath, JProgressBar progressBar) throws UnknownHostException, IOException{
 		this.port = port;
@@ -31,24 +32,24 @@ public class Client implements Runnable{
 	}
 	
 	public static void main(String []args) throws UnknownHostException, IOException{
-		//Client client = new Client(8000,"	127.0.0.1");
+		//Client client = new Client(8000,"127.0.0.1");
 		//client.send("Projeto de Hardware.rar", client.socket);
 	}
 	
-	public void send(String path, Socket client) throws IOException {
+	public void send(String path, Socket client, File file) throws IOException {
 		
-		File file = new File(path); // caminho/nome pro arquivo a ser enviado ex: "C:\\Program Files (x86)\\Steam\\Steam.exe"->
+		 // caminho/nome pro arquivo a ser enviado ex: "C:\\Program Files (x86)\\Steam\\Steam.exe"->
 									//de prefeferencia usar nome de arquivo localizado na pasta do projeto no eclipse
 		byte[] pkt = new byte [1024*16]; //define o tamanho maximo do pkt
 		FileInputStream toSend = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(toSend);//buffer do arquivo
 		OutputStream output = client.getOutputStream();
-		int totalSize=(int) file.getTotalSpace();
+		this.totalSize=(int) file.getTotalSpace();
 		int pktSize = -1;        
 		while ((pktSize = buffer.read(pkt)) > 0) { //escreve a medida que vai lendo o arquivo para nao causar falta de memoria
             this.manageProgressBar(pktSize, totalSize);
 			output.write(pkt, 0, pktSize);
-            System.out.println(pktSize);
+			// System.out.println(pktSize);
         }
 		
 		output.flush();
@@ -57,33 +58,30 @@ public class Client implements Runnable{
 		
 	}
 	
-	public void sendFileName(String path) throws UnknownHostException, IOException{//envia o nome do arquivo na porta 8100
+	public void sendFileName(String path, File file) throws UnknownHostException, IOException{//envia o nome do arquivo na porta 8100
+		this.totalSize = (int) file.getTotalSpace();
 		Socket socket = new Socket(this.address, 8100);
 		DataOutputStream data = new DataOutputStream(socket.getOutputStream());
 		data.writeUTF(path);
+		data.writeInt(this.totalSize);
 		data.flush();
 		data.close();
 	}
 	private int i;
 	public void manageProgressBar(int value,int total){
-		this.auxValue = 10000;
-		System.out.println(this.auxValue);
+		this.progressBar.setMaximum(total);
+		this.auxValue +=value;
+		this.progressBar.setValue(this.auxValue);
 		
-		long percent = (this.auxValue*100)/total;
-		if(percent>1.0){
-			this.progressBar.setValue((int) percent);
-		}
-		System.out.println(percent +"erhweuh");
-
-		//ajustar
-		System.out.println(this.progressBar.getValue());
+		//System.out.println("progressbar value "+this.progressBar.getValue());
 	}
 	
 	@Override
 	public void run() {
 			try{
-				sendFileName(this.filePath);
-				this.send(this.filePath, this.socket);
+				File file = new File(this.filePath);
+				sendFileName(this.filePath,file);
+				this.send(this.filePath, this.socket,file);
 				this.socket.close();
 			}catch(IOException e){	
 				e.printStackTrace();

@@ -52,7 +52,7 @@ public class MainFrame extends JFrame {
 		
 
 		JProgressBar progressBar = new JProgressBar();
-		progressBar.setBounds(81, 100, 261, 29);
+		progressBar.setBounds(58, 57, 261, 29);
 		contentPane.add(progressBar);
 		
 		fileNameField = new JTextField();
@@ -122,8 +122,19 @@ public class MainFrame extends JFrame {
 		lblIp.setBounds(36, 17, 46, 14);
 		contentPane.add(lblIp);
 		
+		JProgressBar progressBar2 = new JProgressBar();
+		progressBar2.setBounds(58, 97, 261, 29);
+		contentPane.add(progressBar2);
+		
+		JLabel lblEnvio = new JLabel("Envio");
+		lblEnvio.setBounds(10, 57, 46, 14);
+		contentPane.add(lblEnvio);
+		
+		JLabel lblRecebido = new JLabel("Recebido");
+		lblRecebido.setBounds(2, 97, 46, 14);
+		contentPane.add(lblRecebido);
+		
 
 
 	}
-
 }

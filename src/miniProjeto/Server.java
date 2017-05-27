@@ -16,9 +16,10 @@ public class Server implements Runnable {
 	
 	private int serverPort;
 	
-	private Socket client;//temporario esse eh o socket do  serverSocket.accept();
+	private Socket client;
 	private ServerSocket serverSocket;
 	private String fileName;
+	private int fileSize;
 	private ServerSocket s;
 	
 	public Server(int serverPort) throws IOException{
@@ -37,7 +38,7 @@ public class Server implements Runnable {
 		int pktSize = -1;
 		
 		while ((pktSize = input.read(pkt)) > 0) {//a medida que recebe, vai montando o arquivo
-			System.out.println("d");
+			//System.out.println("d");
             output.write(pkt, 0, pktSize);
         }
 		
@@ -51,6 +52,8 @@ public class Server implements Runnable {
 		Socket a = s.accept();
 		DataInputStream in = new DataInputStream(a.getInputStream());
 		this.fileName = in.readUTF();
+		this.fileSize = in.readInt();
+		System.out.println(fileName +" " +fileSize);
 		a.close();
 		
 		
