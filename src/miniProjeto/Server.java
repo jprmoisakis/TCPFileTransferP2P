@@ -81,6 +81,8 @@ public class Server implements Runnable {
 				System.out.println("esperando");
 				this.client =this.serverSocket.accept();
 				this.receive();
+				this.progressBar.setValue(0);
+				this.auxValue = 0;
 				//this.progressBar.setValue(0);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

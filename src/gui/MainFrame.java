@@ -23,6 +23,7 @@ public class MainFrame extends JFrame {
 	private JPanel contentPane;
 	private JTextField fileNameField;
 	private Thread t;
+	
 	/**
 	 * Launch the application.
 	 */
