@@ -22,14 +22,14 @@ public class Server implements Runnable {
 	private ServerSocket serverSocket;
 	private String fileName;
 	private int fileSize;
-	private ServerSocket s;
+	private ServerSocket ss;
 	private JProgressBar progressBar;
 	private int auxValue;
 	
 	public Server(int serverPort,JProgressBar progressBar) throws IOException{
 		this.serverPort = serverPort;
 		this.serverSocket = new ServerSocket(serverPort);
-		this.s = new ServerSocket(8100);
+		this.ss = new ServerSocket(8100);
 		this.progressBar = progressBar;
 	}
 	
@@ -63,7 +63,7 @@ public class Server implements Runnable {
 	}
 
 	public void receiveFileName() throws IOException{//recebe o filename
-		Socket a = s.accept();
+		Socket a = ss.accept();
 		DataInputStream in = new DataInputStream(a.getInputStream());
 		this.fileName = in.readUTF();
 		this.fileSize = in.readInt();

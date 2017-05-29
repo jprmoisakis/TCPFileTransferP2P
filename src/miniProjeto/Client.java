@@ -66,6 +66,7 @@ public class Client implements Runnable{
 		data.writeInt(this.totalSize);
 		data.flush();
 		data.close();
+		socket.close();
 	}
 	
 	public void manageProgressBar(int value,int total){
