@@ -1,11 +1,10 @@
 package gui;
 
-import java.awt.BorderLayout;
+
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,9 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import miniProjeto.Client;
-import miniProjeto.Server;
-
 public class SetUpClient extends JFrame {
 
 	private JPanel contentPane;
@@ -24,11 +20,7 @@ public class SetUpClient extends JFrame {
 	private JTextField ipField;
 	private JLabel lblPorta;
 	private JLabel lblIp;
-	
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -42,9 +34,6 @@ public class SetUpClient extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public SetUpClient() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 318, 174);
@@ -64,7 +53,7 @@ public class SetUpClient extends JFrame {
 		ipField.setColumns(10);
 		
 		JButton btnEnviar = new JButton("OK");
-		btnEnviar.addActionListener(new ActionListener() {
+		btnEnviar.addActionListener(new ActionListener() {//edita as informacoes de envio para que ja estejam prontas na proxima tela
 			public void actionPerformed(ActionEvent arg0) {
 				String portString = portField.getText();
 				String address = ipField.getText();
@@ -80,7 +69,7 @@ public class SetUpClient extends JFrame {
 				GUI.showSetUpClient(false); //esconde a janela atual
 				
 				GUI.getMainFrame();
-				GUI.showMainFrame(true);
+				GUI.showMainFrame(true);//abre o mainFrame
 				
 				dispose();
 			}

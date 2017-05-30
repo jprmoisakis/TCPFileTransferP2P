@@ -1,10 +1,12 @@
 package gui;
 
+import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
 import miniProjeto.Client;
 import miniProjeto.Server;
-
+import miniProjeto.ServerRTT;
+//classe criada com a funcao de armazenar e modificar valores facilmente
 public abstract class GUI {
 	private static Client client;
 	private static int connectToPort;
@@ -22,6 +24,25 @@ public abstract class GUI {
 	
 	private static String file2SendName;
 	
+	private static ServerRTT serverRTT;
+	private static JLabel lblRtt;
+	
+	public static JLabel getLblRtt() {
+		return lblRtt;
+	}
+
+	public static void setLblRtt(JLabel lblRtt) {
+		GUI.lblRtt = lblRtt;
+	}
+
+	public static ServerRTT getServerRTT() {
+		return serverRTT;
+	}
+
+	public static void setServerRTT(ServerRTT serverRTT) {
+		GUI.serverRTT = serverRTT;
+	}
+
 	public static JProgressBar getProgressBar1() {
 		return progressBar1;
 	}
@@ -128,7 +149,7 @@ public abstract class GUI {
 
 	//FILENAME EH ENVIADO NA PORTA 8100 POR PADRAO
 	
-
+	//RTT NA 8001
 
 
 

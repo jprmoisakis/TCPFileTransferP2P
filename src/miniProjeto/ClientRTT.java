@@ -5,18 +5,31 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import javax.swing.JLabel;
+
 public class ClientRTT implements Runnable{
 
 	private String address;
 	private static long rtt;
+	private Socket socket;
+	private JLabel lblRTT;
 	
-	public ClientRTT(String address){
+	public ClientRTT(String address, JLabel lblRTT){
 		this.address = address;
+		this.lblRTT = lblRTT;
 	}
 
-	public void run() {
+	public Socket getSocket() {
+		return socket;
+	}
+
+	public void setSocket(Socket socket) {
+		this.socket = socket;
+	}
+
+	public void run() {//calcula o rtt
 		try {
-			Socket socket = new Socket(address, 8001);
+			this.socket = new Socket(address, 8001);
 			DataInputStream in = new DataInputStream(socket.getInputStream());
 			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 			
@@ -27,6 +40,8 @@ public class ClientRTT implements Runnable{
 				long finalTime = System.currentTimeMillis();
 				
 				rtt= initialTime - finalTime;
+				String tt = ""+rtt; //cast para string
+				this.lblRTT.setText(tt);//muda o texto da mainframe para mostrar o rtt
 				Thread.sleep(1000);
 			}
 		} catch (IOException e) {
@@ -37,10 +52,6 @@ public class ClientRTT implements Runnable{
 			e.printStackTrace();
 		}
 		
-		
-	}
-	public static long getRtt(){
-		return rtt;
 		
 	}
 

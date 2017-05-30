@@ -22,13 +22,15 @@ public class Client implements Runnable{
 	private JProgressBar progressBar;
 	private int auxValue;
 	private int totalSize;
+	private ClientRTT clientRTT;
 	
-	public Client(int port, String address, String filePath, JProgressBar progressBar) throws UnknownHostException, IOException{
+	public Client(int port, String address, String filePath, JProgressBar progressBar,ClientRTT clientRTT) throws UnknownHostException, IOException{
 		this.port = port;
 		this.address = address;
 		this.socket = new Socket(address, port);
 		this.filePath = filePath;
 		this.progressBar = progressBar;
+		this.clientRTT = clientRTT;
 	}
 	
 	public static void main(String []args) throws UnknownHostException, IOException{
@@ -38,16 +40,14 @@ public class Client implements Runnable{
 	
 	public void send(String path, Socket client, File file) throws IOException {
 		
-		 // caminho/nome pro arquivo a ser enviado ex: "C:\\Program Files (x86)\\Steam\\Steam.exe"->
-									//de prefeferencia usar nome de arquivo localizado na pasta do projeto no eclipse
-		byte[] pkt = new byte [1024*16]; //define o tamanho maximo do pkt
+		byte[] pkt = new byte [1024]; //define o tamanho maximo do pkt
 		FileInputStream toSend = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(toSend);//buffer do arquivo
 		OutputStream output = client.getOutputStream();
 		this.totalSize=(int) file.getTotalSpace();
 		int pktSize = -1;        
 		while ((pktSize = buffer.read(pkt)) > 0) { //escreve a medida que vai lendo o arquivo para nao causar falta de memoria
-            this.manageProgressBar(pktSize, totalSize);
+            this.manageProgressBar(pktSize, this.totalSize);
 			output.write(pkt, 0, pktSize);
 			// System.out.println(pktSize);
         }
@@ -69,7 +69,7 @@ public class Client implements Runnable{
 		socket.close();
 	}
 	
-	public void manageProgressBar(int value,int total){
+	public void manageProgressBar(int value,int total){//gerencia o progresso da progressbar
 		this.progressBar.setMaximum(total);
 		this.auxValue +=value;
 		this.progressBar.setValue(this.auxValue);
@@ -81,9 +81,10 @@ public class Client implements Runnable{
 	public void run() {
 			try{
 				File file = new File(this.filePath);
-				sendFileName(this.filePath,file);
-				this.send(this.filePath, this.socket,file);
+				sendFileName(this.filePath,file);//chama o metodo que envia o nome do arquivo (o arquivo deve estar na pasta do projeto no eclipse
+				this.send(this.filePath, this.socket,file);//chama o metodo de enviar
 				this.socket.close();
+				this.clientRTT.getSocket().close();//fecha o socket do rtt
 			}catch(IOException e){	
 				e.printStackTrace();
 			}

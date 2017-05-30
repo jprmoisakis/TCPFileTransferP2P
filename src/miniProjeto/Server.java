@@ -40,9 +40,9 @@ public class Server implements Runnable {
 	
 	public void receive() throws IOException{
 		
-		byte [] pkt = new byte[1024*16]; //tamanho do pkt
+		byte [] pkt = new byte[1024]; //tamanho do pkt
 		InputStream input = this.client.getInputStream();
-		FileOutputStream output = new FileOutputStream(this.fileName + "rcv.zip");//ajeitar para receber o nome do arquivo
+		FileOutputStream output = new FileOutputStream(this.fileName);
 		BufferedOutputStream buffer = new BufferedOutputStream(output);
 		int pktSize = -1;
 		
@@ -56,13 +56,13 @@ public class Server implements Runnable {
 	    this.client.close();
 	    
 	}
-	public void manageProgressBar(int value,int total){
+	public void manageProgressBar(int value,int total){//gerencia a barra de progresso
 		this.progressBar.setMaximum(total);
 		this.auxValue +=value;
 		this.progressBar.setValue(this.auxValue);
 	}
 
-	public void receiveFileName() throws IOException{//recebe o filename
+	public void receiveFileName() throws IOException{//recebe o nome do arquivo e o tamanho
 		Socket a = ss.accept();
 		DataInputStream in = new DataInputStream(a.getInputStream());
 		this.fileName = in.readUTF();
@@ -77,10 +77,10 @@ public class Server implements Runnable {
 	public void run() {
 		while(true){	
 			try {
-				this.receiveFileName();
+				this.receiveFileName();//recebe o nome e tamanho
 				System.out.println("esperando");
 				this.client =this.serverSocket.accept();
-				this.receive();
+				this.receive();//recebe o arquivo
 				this.progressBar.setValue(0);
 				this.auxValue = 0;
 				//this.progressBar.setValue(0);

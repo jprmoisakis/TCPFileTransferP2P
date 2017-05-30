@@ -7,7 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import miniProjeto.ClientRTT;
 import miniProjeto.Server;
+import miniProjeto.ServerRTT;
 
 import javax.swing.JTextField;
 import java.awt.Font;
@@ -22,6 +24,8 @@ public class SetUpServer extends JFrame {
 	private JPanel contentPane;
 	private JTextField portField;
 	private Thread t;
+	private ServerRTT serverRTT;
+	private Thread tRtt;
 	/**
 	 * Launch the application.
 	 */
@@ -55,25 +59,28 @@ public class SetUpServer extends JFrame {
 		portField.setColumns(10);
 		
 		JButton btnEnviar = new JButton("OK");
-		btnEnviar.addActionListener(new ActionListener() {
+		btnEnviar.addActionListener(new ActionListener() {//primeira tela que aparece pedindo a porta a ser usada
 		
-			public void actionPerformed(ActionEvent arg0) {//sobe a parte que fica ouvindo da aplica��o
+			public void actionPerformed(ActionEvent arg0) {//sobe a parte que fica ouvindo da aplicacao
 				String portString = portField.getText();
 				int port = Integer.parseInt(portString);//transforma em int a porta
 				GUI.setServerPort(port);//seta na gui a informacao da porta
 				try {
+					serverRTT = new ServerRTT(GUI.getLblRtt());//seta servidor de rtt
 					GUI.setServer(new Server(port,GUI.getProgressBar2()));//seta a parte servidor da aplicacao
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
+				tRtt = new Thread(serverRTT);
+				tRtt.start();//inicia o servidor do rtt
 				t= new Thread(GUI.getServer());
-				t.start();
+				t.start();//inicia a parte servidor da aplicacao
 				
 				GUI.showSetUpServer(false); //esconde a janela atual
 
 				GUI.getSetUpClient();
-				GUI.showSetUpClient(true);//chama a proxima janela
+				GUI.showSetUpClient(true);//chama a proxima janela, que no caso eh a configuracao de "para quem" voce quer enviar
 				
 				
 				dispose();

@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import miniProjeto.Client;
+import miniProjeto.ClientRTT;
+import miniProjeto.ServerRTT;
 
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
@@ -23,7 +25,8 @@ public class MainFrame extends JFrame {
 	private JPanel contentPane;
 	private JTextField fileNameField;
 	private Thread t;
-	
+	private ClientRTT clientRTT;
+	private Thread tRtt; 
 	/**
 	 * Launch the application.
 	 */
@@ -45,24 +48,30 @@ public class MainFrame extends JFrame {
 	 */
 	public MainFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 490, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JProgressBar progressBar2 = new JProgressBar();
-		progressBar2.setBounds(58, 97, 261, 29);
+		progressBar2.setBounds(81, 97, 261, 29);
 		contentPane.add(progressBar2);
 
 		JProgressBar progressBar = new JProgressBar();
-		progressBar.setBounds(58, 57, 261, 29);
+		progressBar.setBounds(81, 57, 261, 29);
 		contentPane.add(progressBar);
 		
+		JLabel lblRtt = new JLabel("rtt");
+		lblRtt.setBounds(362, 57, 46, 14);
+		contentPane.add(lblRtt);
+		
 		fileNameField = new JTextField();
-		fileNameField.setBounds(125, 163, 217, 20);
+		fileNameField.setBounds(161, 163, 217, 20);
 		contentPane.add(fileNameField);
 		fileNameField.setColumns(10);
+		
+		
 		
 		JButton btnEnviar = new JButton("Enviar");
 		btnEnviar.addActionListener(new ActionListener() {//abre uma conexão com o cliente destino e envia o arquivo
@@ -71,17 +80,22 @@ public class MainFrame extends JFrame {
 				progressBar.setValue(0);
 				progressBar2.setValue(0);
 				
+				
 				GUI.setFile2SendName(filename);
 				try {
-					GUI.getServer().setProgressBar(progressBar2);
+					clientRTT = new ClientRTT(GUI.getConnectToAddress(),lblRtt);//cria novo "cliente" para envio do rtt
+					
+					GUI.getServer().setProgressBar(progressBar2);//gerencia a progressbar diretamente
 					GUI.setProgressBar2(progressBar2);
-					GUI.setClient(new Client(GUI.getConnectToPort(),GUI.getConnectToAddress(),filename,progressBar));
+					GUI.setClient(new Client(GUI.getConnectToPort(),GUI.getConnectToAddress(),filename,progressBar,clientRTT));//cria novo "cliente" para envio do arquivo, nome do arquivo e tamanho
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				tRtt = new Thread(clientRTT);
+				tRtt.start();//inicia a thread de envio de rtt
 				t= new Thread(GUI.getClient());
-				t.start();
+				t.start();//inicia a thread de envio de arquivo
 				GUI.getServer().setProgressBar(progressBar2);
 				GUI.showMainFrame(true);
 				
@@ -105,14 +119,14 @@ public class MainFrame extends JFrame {
 		
 		JButton btnEditarInfoEnvio = new JButton("Editar Info Envio");
 		btnEditarInfoEnvio.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {//chama tela de alterar as informacoes de envio
 				
 				GUI.getSetUpClient();
 				GUI.showSetUpClient(true);
 			
 			}
 		});
-		btnEditarInfoEnvio.setBounds(269, 11, 155, 23);
+		btnEditarInfoEnvio.setBounds(309, 11, 155, 23);
 		contentPane.add(btnEditarInfoEnvio);
 		
 
@@ -136,9 +150,14 @@ public class MainFrame extends JFrame {
 		contentPane.add(lblEnvio);
 		
 		JLabel lblRecebido = new JLabel("Recebido");
-		lblRecebido.setBounds(2, 97, 46, 14);
+		lblRecebido.setBounds(10, 100, 46, 14);
 		contentPane.add(lblRecebido);
 		
+		JLabel lblRrtt = new JLabel("rtt");
+		lblRrtt.setBounds(418, 57, 46, 14);
+		contentPane.add(lblRrtt);
+		
+
 
 
 	}
